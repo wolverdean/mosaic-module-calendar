@@ -167,12 +167,12 @@
               <button class="cal-icon-btn cal-del-btn"  data-id="${e.id}" title="Delete">✕</button>
             </div>`).join('')}
           ${modItems.map(it => `
-            <div class="cal-event-row">
+            <div class="cal-event-row${it._source ? ' cal-mod-row' : ''}"
+                 ${it._source ? `data-slug="${esc(it._source)}"` : ''}
+                 style="${it._source ? 'cursor:pointer' : ''}">
               <div class="cal-event-dot" style="background:var(--muted)"></div>
               <div class="cal-event-body">
-                <div class="cal-event-title">${it.url
-                  ? `<a href="${esc(it.url)}" style="color:var(--text);text-decoration:none">${esc(it.title)}</a>`
-                  : esc(it.title)}</div>
+                <div class="cal-event-title">${esc(it.title)}</div>
                 <div class="cal-event-meta"><span class="cal-tag">${esc(it._source)}</span></div>
               </div>
             </div>`).join('')}
@@ -314,6 +314,10 @@
           await loadMonth(); render()
         } catch (err) { alert(err.message || 'Failed to delete') }
       })
+    })
+
+    container.querySelectorAll('.cal-mod-row[data-slug]').forEach(row => {
+      row.addEventListener('click', () => navigateTo(row.dataset.slug))
     })
   }
 
