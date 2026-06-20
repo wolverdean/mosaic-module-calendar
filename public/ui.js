@@ -169,6 +169,7 @@
           ${modItems.map(it => `
             <div class="cal-event-row${it._source ? ' cal-mod-row' : ''}"
                  ${it._source ? `data-slug="${esc(it._source)}"` : ''}
+                 ${it.url     ? `data-url="${esc(it.url)}"` : ''}
                  style="${it._source ? 'cursor:pointer' : ''}">
               <div class="cal-event-dot" style="background:var(--muted)"></div>
               <div class="cal-event-body">
@@ -317,7 +318,12 @@
     })
 
     container.querySelectorAll('.cal-mod-row[data-slug]').forEach(row => {
-      row.addEventListener('click', () => navigateTo(row.dataset.slug))
+      row.addEventListener('click', () => {
+        const slug   = row.dataset.slug
+        const url    = row.dataset.url
+        const itemId = url ? url.split('/').filter(Boolean).pop() : undefined
+        navigateTo(slug, itemId ? { itemId } : undefined)
+      })
     })
   }
 
