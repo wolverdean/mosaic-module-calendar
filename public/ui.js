@@ -319,9 +319,10 @@
 
     container.querySelectorAll('.cal-mod-row[data-slug]').forEach(row => {
       row.addEventListener('click', () => {
-        const slug   = row.dataset.slug
-        const url    = row.dataset.url
-        const itemId = url ? url.split('/').filter(Boolean).pop() : undefined
+        const slug    = row.dataset.slug
+        const url     = row.dataset.url
+        const segment = url ? url.split('/').filter(Boolean).pop() : undefined
+        const itemId  = segment && /^\d+$/.test(segment) ? segment : undefined
         navigateTo(slug, itemId ? { itemId } : undefined)
       })
     })
